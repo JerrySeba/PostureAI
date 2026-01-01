@@ -1,0 +1,7 @@
+# System files
+.DS_Store
+thumbs.db
+
+# Local server logs
+.vscode/
+node_modules/
