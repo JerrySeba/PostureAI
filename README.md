@@ -5,3 +5,5 @@ PostureCorrection/
 │   └── logo.jpg      # Custom PostureAlign Logo
 └── src/
     └── app.js        # Core AI Logic & Calibration Data
+## 🔗 Live Demo
+Check it out here: https://jerryseba.github.io/PostureAI/
