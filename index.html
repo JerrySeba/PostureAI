@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostureAI | Personalized Coach</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+    <style>
+        .overlay-warning { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(12px); }
+        .text-cyan-glow { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+        .bg-glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(4px); }
+    </style>
+</head>
+<body class="bg-slate-950 text-white font-sans overflow-hidden">
+
+    <div class="flex h-screen">
+        <aside class="w-80 bg-slate-900 p-8 border-r border-slate-800 flex flex-col justify-between shadow-2xl z-10">
+            <div>
+                <div class="flex items-center gap-3 mb-8">
+                    <img src="assets/logo.jpg" alt="Logo" class="w-12 h-12 object-contain rounded-lg" onerror="this.src='https://via.placeholder.com/50?text=PA'">
+                    <h1 class="text-3xl font-black italic uppercase tracking-tighter text-cyan-glow">PostureAI</h1>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-glass border border-slate-700">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Profile Status</span>
+                        <p id="baseline-status" class="text-xs text-yellow-500 italic">No Baseline Set</p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-glass border border-slate-700">
+                        <span class="text-[10px] text-cyan-500 uppercase font-bold tracking-widest">Personalized Advice</span>
+                        <ul id="advice-list" class="mt-2 text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Set a baseline to begin coaching.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col gap-3">
+                <label for="uploadBaseline" class="bg-emerald-600 hover:bg-emerald-500 py-3 rounded-xl font-bold text-white text-center cursor-pointer transition-all text-sm">
+                    1. Upload Perfect Posture
+                </label>
+                <input type="file" id="uploadBaseline" accept="image/*" class="hidden">
+
+                <label for="uploadCheck" id="checkLabel" class="bg-[#00e5ff] hover:bg-cyan-400 py-4 rounded-xl font-bold text-slate-900 text-center cursor-pointer transition-all shadow-lg opacity-50 pointer-events-none">
+                    2. Check My Posture
+                </label>
+                <input type="file" id="uploadCheck" accept="image/*" class="hidden">
+
+                <button onclick="localStorage.clear(); location.reload();" class="text-[10px] text-slate-600 uppercase font-bold hover:text-red-500 transition-colors">Reset All Data</button>
+            </div>
+        </aside>
+
+        <main class="flex-1 relative flex items-center justify-center p-12 bg-black">
+            <div id="image-container" class="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden border-4 border-slate-800 shadow-2xl bg-slate-900 flex items-center justify-center">
+                <canvas id="output_canvas" class="max-w-full max-h-full object-contain"></canvas>
+                
+                <div id="alert-overlay" class="absolute inset-0 overlay-warning opacity-0 transition-opacity duration-300 flex flex-col items-center justify-center pointer-events-none z-50 text-center px-6">
+                    <h2 class="text-5xl font-black text-red-600 tracking-tighter uppercase mb-2 italic">Deviation Detected</h2>
+                    <p class="text-slate-400 text-lg mb-6">Your posture has shifted from your saved baseline.</p>
+                    <button onclick="this.parentElement.style.opacity='0'" class="px-8 py-3 bg-red-600 text-white font-bold rounded-xl pointer-events-auto">Close Analysis</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="src/app.js"></script>
+</body>
+</html>
